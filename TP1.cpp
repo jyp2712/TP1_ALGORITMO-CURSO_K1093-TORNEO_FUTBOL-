@@ -32,7 +32,7 @@ typedef struct {
 
 /* ******************************************************************
  *                     	   PROTOTIPOS DE
- * 						     FUNCIONES
+ *                           FUNCIONES
  * *****************************************************************/
 
 void Pasar_Archivo_Vector(t_equipo[], int&);
@@ -95,6 +95,7 @@ int i;
 	if (cant < MAX_EQUIPOS){
 		
 		strcpy(team.ID, "000");
+                strcpy(team.nombre, "000");
 		team.PotAtaque = 0;
 		team.PotDefensa = 0;
 		
@@ -275,3 +276,4 @@ FILE *archivo;
 	
 	fclose(archivo);
 }
+
