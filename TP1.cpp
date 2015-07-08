@@ -43,6 +43,8 @@ void Agregar_equipo(t_equipo[], int&);
 
 void Ingresar_equipo (t_equipo&);
 
+void Buscar_equipo(t_equipo[], t_equipo, int, bool &);
+
 void Modificar_equipo(t_equipo[], int, t_equipo);
 
 void Eliminar_equipo(t_equipo[], int&);
@@ -92,19 +94,7 @@ int i;
 			fread (&team, sizeof(t_equipo),1,archivo);
 		}
 	}
-	if (cant < MAX_EQUIPOS){
-		
-		strcpy(team.ID, "000");
-                strcpy(team.nombre, "000");
-		team.PotAtaque = 0;
-		team.PotDefensa = 0;
-		
-		for (i =cant; i <MAX_EQUIPOS; i++){
-			
-			vector[i] = team;
-		}
-	
-	}
+
 	
 	fclose(archivo);
 }
@@ -113,149 +103,151 @@ void MenuPrincipal (t_equipo vector[], int &cant){
 
 int numero;
 
-			cout<<"1. Agregar Equipo"<<endl;
-			cout<<"2. Eliminar Equipo"<<endl;
-			cout<<"3. Ver Equipo"<<endl;
-			cout<<"0. Salir"<<endl;
-			cout<<"Elija una opción: ";
+	do{
+		
+		cout<<"1. Agregar Equipo"<<endl;
+		cout<<"2. Eliminar Equipo"<<endl;
+		cout<<"3. Ver Equipo"<<endl;
+		cout<<"0. Salir"<<endl;
+		cout<<"Elija una opción: ";
 
-			cin>>numero;
+		cin>>numero;
 
-			switch (numero){
+		switch (numero){
 
-						case Agregar: 	cout<<endl;
-										Agregar_equipo (vector, cant);
-												break;
-						case Eliminar: 	cout<<endl;
-										Eliminar_equipo (vector, cant);
-												break;
-						case Ver: 		cout<<endl;
-										Ver_equipo (vector, cant);
-												break;
-						case Salir: 	cout<<"Salir"<<endl;
-												break;
-						default:
-										cout<<"Opción incorrecta"<<endl;
-												break;
-			}
-			
-		if (numero != 0){
-			cout<<endl;
-			MenuPrincipal(vector, cant);
+			case Agregar: 	cout<<endl;
+					Agregar_equipo (vector, cant);
+					break;
+			case Eliminar: 	cout<<endl;
+					Eliminar_equipo (vector, cant);
+					break;
+			case Ver: 	cout<<endl;
+					Ver_equipo (vector, cant);
+					break;
+			case Salir: 	cout<<"Salir"<<endl;
+					break;
+			default:
+					cout<<"Opción incorrecta"<<endl;
+					break;
 		}
+			
+	}while(numero!=0);
 }
 
 
 void Agregar_equipo (t_equipo vector[], int &cant){
 
 t_equipo team;
-int i;
 bool existe = false;
 
-		Ingresar_equipo (team);
+	Ingresar_equipo (team);
+	Buscar_equipo(vector, team, cant, existe);
+	
+	if ((!existe) and (cant<MAX_EQUIPOS)){
 
-		for (i =0; i <cant; i++){
+		vector[cant] = team;
+		cant++;
+	}else{
 
-			if (strcmp(vector[i].ID,team.ID) ==0){
+		if ((!existe) and (cant>=MAX_EQUIPOS)){
 
-				existe = true;
-				Modificar_equipo(vector, i, team);
-			}
+			cout<<endl<<"Ya hay "<<MAX_EQUIPOS<<" equipos, no puede agregar más"<<endl;
 		}
 
-		if ((!existe) and (cant<MAX_EQUIPOS)){
-
-			vector[cant] = team;
-			cant++;
-		}else{
-
-			if ((!existe) and (cant>=MAX_EQUIPOS)){
-
-				cout<<endl<<"Ya hay "<<MAX_EQUIPOS<<" equipos, no puede agregar más"<<endl;
-			}
-
-		}
-
+	}
 }
 
 void Ingresar_equipo (t_equipo &team){
 
-		cout<<"Ingrese ID"<<endl;
-		cin>>team.ID;
-		cout<<"Ingrese nombre"<<endl;
-		cin>>team.nombre;
-		cout<<"Ingrese potencia de ataque"<<endl;
-		cin>>team.PotAtaque;
-		cout<<"Ingrese potencia de defensa"<<endl;
-		cin>>team.PotDefensa;
+	cout<<"Ingrese ID"<<endl;
+	cin>>team.ID;
+	cout<<"Ingrese nombre"<<endl;
+	cin>>team.nombre;
+	cout<<"Ingrese potencia de ataque"<<endl;
+	cin>>team.PotAtaque;
+	cout<<"Ingrese potencia de defensa"<<endl;
+	cin>>team.PotDefensa;
 
+}
+
+void Buscar_equipo(t_equipo vector[], t_equipo team, int cant, bool &existe){
+
+int i;
+
+	for (i =0; i <cant; i++){
+
+		if (strcmp(vector[i].ID,team.ID) ==0){
+
+			existe = true;
+			Modificar_equipo(vector, i, team);
+		}
+	}
 }
 
 void Modificar_equipo(t_equipo vector[], int posicion, t_equipo team){
 
 char modificar;
 
-		cout<<endl<<"Desea modificar el equipo S/N"<<endl;
-		cin>>modificar;
+	cout<<endl<<"Desea modificar el equipo S/N"<<endl;
+	cin>>modificar;
 
-		if (modificar == 'S'){
+	if (modificar == 'S'){
 
-			vector[posicion] = team;
-		}
+		vector[posicion] = team;
+	}
 
 }
 
 void Eliminar_equipo (t_equipo vector[], int &cant){
 
 char identificador[4];
-int i, j;
+int pos =0;
 bool existe = false;
 
-		cout<<"Ingrese ID"<<endl;
-		cin>>identificador;
+	cout<<"Ingrese ID"<<endl;
+	cin>>identificador;
 
-		for (i =0; i <cant and !existe; i++){
-
-				if (strcmp(vector[i].ID,identificador)==0){
-						
-					existe = true;
-
-					for (j = i; j <cant; j++){
-
-						vector[j] = vector[j+1];
-					}
-				}
+	while (!existe && pos < cant){
+		if (strcmp(vector[pos].ID, identificador) == 0){
+			existe = true;
 		}
-
-		if (!existe){
-				cout<<endl<<"No existe el equipo que desea eliminar"<<endl;
-		}else{
-				cant--;
+		else {
+			pos++;
 		}
+	}
+	if (existe) {
+		cant--;
+		for (int i = pos; i < cant; i++) {
+			vector[i] = vector[i + 1];
+		}	
+	}
+	else{
+		cout<<endl<<"No existe el equipo que desea eliminar"<<endl;
+	}
 }
 
 
 void Ver_equipo (t_equipo vector[], int cant){
 
 int i;
-		if (cant >0){
+	if (cant >0){
 
-			cout<<endl<<"Lista de equipos:"<<endl;
+		cout<<endl<<"Lista de equipos:"<<endl;
 
-			for (i =0; i <cant; i++){
+		for (i =0; i <cant; i++){
 					
-					cout<<endl;
-					cout<<"ID equipo: "<<vector[i].ID<<endl;
-					cout<<"Nombre equipo: "<<vector[i].nombre<<endl;
-					cout<<"Potencia ataque equipo: "<<vector[i].PotAtaque<<endl;
-					cout<<"Potencia defensa equipo: "<<vector[i].PotDefensa<<endl;
-			}
-
-		}else{
-
-			cout<<endl<<"No hay equipos"<<endl;
-
+			cout<<endl;
+			cout<<"ID equipo: "<<vector[i].ID<<endl;
+			cout<<"Nombre equipo: "<<vector[i].nombre<<endl;
+			cout<<"Potencia ataque equipo: "<<vector[i].PotAtaque<<endl;
+			cout<<"Potencia defensa equipo: "<<vector[i].PotDefensa<<endl;
 		}
+
+	}else{
+
+		cout<<endl<<"No hay equipos"<<endl;
+
+	}
 	
 }
 
