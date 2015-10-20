@@ -79,7 +79,6 @@ void Pasar_Archivo_Vector (t_equipo vector[], int &cant){
 
 t_equipo team;
 FILE *archivo;
-int i;
 
 	archivo = fopen ("Equipos.bin", "a+b");
 
