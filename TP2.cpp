@@ -123,11 +123,9 @@ void mostrarTabla (t_tabla [], int);
 
 void partidosPorEquipo (Nodo <t_fixture> *);
 
-void mostrarPartido (Nodo <t_fixture> *);
-
 void MostrarPorFecha(Nodo <t_fixture> *);
 
-void mostrar(Nodo <t_fixture> *);
+void mostrarPartido(Nodo <t_fixture> *);
 
 /* ******************************************************************
  *                        PROGRAMA PRINCIPAL
@@ -640,28 +638,11 @@ cout<<"Partidos de ";	cout<<equipoID<<endl;
 while (fixture != NULL){
 
 	if((strcmp(fixture->info.localID, equipoID)==0) || (strcmp(fixture->info.visitanteID, equipoID)==0)){
-		mostrarPartido(fixture);
+		mostrar(fixture);
 	}
 	fixture = fixture->siguiente;
 	}
 }
-
-void mostrarPartido (Nodo <t_fixture> *fixture){
-
-cout<<fixture->info.localID;
-cout<<" ";
-cout<<fixture->info.localnombre;
-cout<<"		";
-cout<<fixture->info.GolesL;
-cout<<" - ";
-cout<<fixture->info.GolesV;
-cout<<" ";
-cout<<fixture->info.visitanteID;
-cout<<" ";
-cout<<fixture->info.visitantenombre<<endl;
-	
-}
-
 
 void MostrarPorFecha(Nodo <t_fixture> *fixture)
 {
@@ -674,13 +655,13 @@ int fecha;
 	{
 		if(fixture->info.fecha==fecha)
 		{
-			mostrar(fixture);
+			mostrarPartido(fixture);
 		}
 		fixture=fixture->siguiente;
 	}
 }
 
-void mostrar(Nodo <t_fixture> *resultado)
+void mostrarPartido(Nodo <t_fixture> *resultado)
 {
 	cout<<resultado->info.localID<<" ";
 	cout<<resultado->info.localnombre<<"	";
