@@ -440,16 +440,16 @@ void CargarDatosPartido (t_equipo vec[], int local, int visitante, int &ataqueL,
 
 void CargarResultados (t_equipo vec[], int local, int visitante, int GL, int GV, int fecha, Nodo <t_fixture> *&fixture){
 
-t_fixture lista;
+t_fixture partido;
 	
-	strcpy(lista.localID, vec[local].ID);
-	strcpy(lista.localnombre, vec[local].nombre);
-	strcpy(lista.visitanteID, vec[visitante].ID);
-	strcpy(lista.visitantenombre, vec[visitante].nombre);
-	lista.GolesL=GL;
-	lista.GolesV=GV;
-	lista.fecha=fecha;
-	InsertarEnLista (fixture, lista);
+	strcpy(partido.localID, vec[local].ID);
+	strcpy(partido.localnombre, vec[local].nombre);
+	strcpy(partido.visitanteID, vec[visitante].ID);
+	strcpy(partido.visitantenombre, vec[visitante].nombre);
+	partido.GolesL=GL;
+	partido.GolesV=GV;
+	partido.fecha=fecha;
+	InsertarEnLista (fixture, partido);
 }
 
 void InsertarEnLista (Nodo <t_fixture> *&lista, t_fixture info){
@@ -506,7 +506,7 @@ int opc;
 	}while (opc!=0);
 }
 
-void CalcularTabla (Nodo <t_fixture> *fixture, int CANT_EQUIPOS){
+void CalcularTabla (Nodo <t_fixture> *fixture, int cantequipos){
 	
 	int fecha;
 	
@@ -514,8 +514,8 @@ void CalcularTabla (Nodo <t_fixture> *fixture, int CANT_EQUIPOS){
 	
 	cin>>fecha;
 	
-	t_tabla vector_tabla[CANT_EQUIPOS];
-	inicializarVector (vector_tabla, CANT_EQUIPOS);
+	t_tabla vector_tabla[cantequipos];
+	inicializarVector (vector_tabla, cantequipos);
 	
 	while ((fixture!=NULL) && (fixture->info.fecha <= fecha)){
 		
@@ -525,9 +525,9 @@ void CalcularTabla (Nodo <t_fixture> *fixture, int CANT_EQUIPOS){
 	fixture = fixture->siguiente;
 	}
 	
-	puntuarTabla(vector_tabla, CANT_EQUIPOS);
-	ordenarTabla(vector_tabla, CANT_EQUIPOS);
-	mostrarTabla(vector_tabla, CANT_EQUIPOS);
+	puntuarTabla(vector_tabla, cantequipos);
+	ordenarTabla(vector_tabla, cantequipos);
+	mostrarTabla(vector_tabla, cantequipos);
 }
 
 void actualizarEquipoEnTabla (char equipoID[], char equiponombre[], int golesConv, int golesRec, t_tabla vector_tabla[]){
@@ -623,16 +623,7 @@ int i;
 	cout<<"Equipo		Puntos	PJ	PG	PE	PP	GF	GC	DG"<<endl;
 
 	for (i=0; i <CANT_EQUIPOS; i++){
-	cout<<vector_tabla[i].equipoID;	cout<<" ";
-	cout<<vector_tabla[i].equipoNombre;	cout<<"	";
-	cout<<vector_tabla[i].Puntos;	cout<<"	";
-	cout<<vector_tabla[i].PJ;	cout<<"	";
-	cout<<vector_tabla[i].PG;	cout<<"	";
-	cout<<vector_tabla[i].PE;	cout<<"	";
-	cout<<vector_tabla[i].PP;	cout<<"	";
-	cout<<vector_tabla[i].GF;	cout<<"	";
-	cout<<vector_tabla[i].GC;	cout<<"	";
-	cout<<vector_tabla[i].DG<<endl;
+	cout<<vector_tabla[i].equipoID;	cout<<" "<<vector_tabla[i].equipoNombre<<"	"<<vector_tabla[i].Puntos<<"	"<<vector_tabla[i].PJ<<"	"<<vector_tabla[i].PG<<"	"<<vector_tabla[i].PE<<"	"<<vector_tabla[i].PP<<"	"<<vector_tabla[i].GF<<"	"<<vector_tabla[i].GC<<"	"<<vector_tabla[i].DG<<endl;
 	}
 }
 
