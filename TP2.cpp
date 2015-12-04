@@ -638,7 +638,7 @@ cout<<"Partidos de ";	cout<<equipoID<<endl;
 while (fixture != NULL){
 
 	if((strcmp(fixture->info.localID, equipoID)==0) || (strcmp(fixture->info.visitanteID, equipoID)==0)){
-		mostrar(fixture);
+		mostrarPartido(fixture);
 	}
 	fixture = fixture->siguiente;
 	}
